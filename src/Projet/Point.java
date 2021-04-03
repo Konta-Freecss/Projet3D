@@ -1,12 +1,9 @@
-package Projet;//
-// Decompiled by Procyon v0.5.36
-// 
-
+package Projet;
 public class Point
 {
-    Float x;
-    Float y;
-    Float z;
+    private Float x;
+    private Float y;
+    private Float z;
     
     public Point(final Float x, final Float y, final Float z) {
         this.x = x;
@@ -17,24 +14,12 @@ public class Point
     public Float getX() {
         return this.x;
     }
-    
-    public void setX(final Float x) {
-        this.x = x;
-    }
-    
+
     public Float getY() {
         return this.y;
     }
     
-    public void setY(final Float y) {
-        this.y = y;
-    }
-    
     public Float getZ() {
         return this.z;
-    }
-    
-    public void setZ(final Float z) {
-        this.z = z;
     }
 }
