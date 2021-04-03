@@ -12,10 +12,11 @@ import com.jogamp.opengl.GLEventListener;
 
 public class MyGLEventListener implements GLEventListener
 {
+
 	private float view_rotx;
 	private float view_roty;
 	private float scale;
-	private boolean zoomModified;
+	private boolean VisionChanged;
 	private float aspect;
 	SceneMouseAdapter objectMouse;
 	SceneKeyAdapter objectKeys;
@@ -25,8 +26,8 @@ public class MyGLEventListener implements GLEventListener
 	public MyGLEventListener() {
 		this.view_rotx = 20.0f;
 		this.view_roty = 30.0f;
-		this.scale = 7.0f;
-		this.zoomModified = false;
+		this.scale = 6.0f;
+		this.VisionChanged = false;
 	}
 
 	@Override
@@ -58,12 +59,14 @@ public class MyGLEventListener implements GLEventListener
 
 	@Override
 	public void reshape(final GLAutoDrawable drawable, final int x, final int y, final int width, final int height) {
-		final GL2 gl = drawable.getGL().getGL2();
+		GL2 gl = drawable.getGL().getGL2();
 		this.aspect = height / (float)width;
-		gl.glMatrixMode(5889);
+		//vue différente
+		//aspect = (float)width / (float)height;
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		gl.glFrustum(-this.scale, this.scale, -this.scale * this.aspect, this.scale * this.aspect, 5.0, 6000.0);
-		gl.glMatrixMode(5888);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
 
 	@Override
@@ -72,7 +75,7 @@ public class MyGLEventListener implements GLEventListener
 
 	@Override
 	public void display(final GLAutoDrawable drawable) {
-		final GL2 gl = drawable.getGL().getGL2();
+		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(16640);
 		gl.glPushMatrix();
 		this.updateScaleAndRotation(gl, this.aspect, this.view_rotx, this.view_roty);
@@ -80,34 +83,40 @@ public class MyGLEventListener implements GLEventListener
 		final Point[] points = this.fondMarin.getPoints();
 
 		//Mur
-		gl.glColor3d(0.0, 0.4, 1.0);
+		// 18 255 255
+		gl.glColor3d(0.706, 1.0, 1.0);
+
 		gl.glBegin(7);
 		gl.glVertex3f(points[3].getX(), points[3].getY(), points[3].getZ());
 		gl.glVertex3f(points[2].getX(), points[2].getY(), points[2].getZ());
 		gl.glVertex3f(points[1].getX(), points[1].getY(), points[1].getZ());
 		gl.glVertex3f(points[0].getX(), points[0].getY(), points[0].getZ());
+
 		gl.glVertex3f(points[7].getX(), points[7].getY(), points[7].getZ());
 		gl.glVertex3f(points[3].getX(), points[3].getY(), points[3].getZ());
 		gl.glVertex3f(points[0].getX(), points[0].getY(), points[0].getZ());
 		gl.glVertex3f(points[4].getX(), points[4].getY(), points[4].getZ());
+
 		gl.glVertex3f(points[2].getX(), points[2].getY(), points[2].getZ());
 		gl.glVertex3f(points[6].getX(), points[6].getY(), points[6].getZ());
 		gl.glVertex3f(points[5].getX(), points[5].getY(), points[5].getZ());
 		gl.glVertex3f(points[1].getX(), points[1].getY(), points[1].getZ());
+
 		gl.glVertex3f(points[6].getX(), points[6].getY(), points[6].getZ());
 		gl.glVertex3f(points[7].getX(), points[7].getY(), points[7].getZ());
 		gl.glVertex3f(points[4].getX(), points[4].getY(), points[4].getZ());
 		gl.glVertex3f(points[5].getX(), points[5].getY(), points[5].getZ());
 
 		//Toit
-		gl.glColor3d(0.0, 0.75, 1.0);
+		//18 161 255
+		gl.glColor3d(0.3, 0.3, 1.0);
 		gl.glVertex3f(points[1].getX(), points[1].getY(), points[1].getZ());
 		gl.glVertex3f(points[5].getX(), points[5].getY(), points[5].getZ());
 		gl.glVertex3f(points[4].getX(), points[4].getY(), points[4].getZ());
 		gl.glVertex3f(points[0].getX(), points[0].getY(), points[0].getZ());
 
 		//Sol
-		gl.glColor3d(0.0, 0.2, 0.3);
+		gl.glColor3d(0.1608, 0.2863, 0.3725);
 		gl.glVertex3f(points[7].getX(), points[7].getY(), points[7].getZ());
 		gl.glVertex3f(points[6].getX(), points[6].getY(), points[6].getZ());
 		gl.glVertex3f(points[2].getX(), points[2].getY(), points[2].getZ());
@@ -119,14 +128,16 @@ public class MyGLEventListener implements GLEventListener
 		final ArrayList<Float> couleurs = this.fondMarin.getCouleurSol();
 		for (int i = 0; i < this.fondMarin.getTaille() - 1; ++i) {
 			for (int j = 0; j < this.fondMarin.getTaille() - 1; ++j) {
+
 				gl.glBegin(4);
-				gl.glColor3d(0.0, couleurs.get(i * j), couleurs.get(i * j));
+				gl.glColor3d(couleurs.get(i * j), couleurs.get(i * j), couleurs.get(i * j));
 				gl.glVertex3f(sol.get(i + 1)[j].getX(), sol.get(i + 1)[j].getY(), sol.get(i + 1)[j].getZ());
 				gl.glVertex3f(sol.get(i + 1)[j + 1].getX(), sol.get(i + 1)[j + 1].getY(), sol.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(sol.get(i)[j].getX(), sol.get(i)[j].getY(), sol.get(i)[j].getZ());
 				gl.glEnd();
+
 				gl.glBegin(4);
-				gl.glColor3d(0.0, couleurs.get(i * j), couleurs.get(i * j));
+				gl.glColor3d(couleurs.get(i * j), couleurs.get(i * j), couleurs.get(i * j));
 				gl.glVertex3f(sol.get(i + 1)[j + 1].getX(), sol.get(i + 1)[j + 1].getY(), sol.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(sol.get(i)[j + 1].getX(), sol.get(i)[j + 1].getY(), sol.get(i)[j + 1].getZ());
 				gl.glVertex3f(sol.get(i)[j].getX(), sol.get(i)[j].getY(), sol.get(i)[j].getZ());
@@ -137,12 +148,12 @@ public class MyGLEventListener implements GLEventListener
 
 
 	public void updateScaleAndRotation(final GL2 gl, final float aspect, final float view_rotx, final float view_roty) {
-		if (this.zoomModified) {
-			gl.glMatrixMode(5889);
+		if (this.VisionChanged) {
+			gl.glMatrixMode(GL2.GL_PROJECTION);
 			gl.glLoadIdentity();
 			gl.glFrustum(-this.scale, this.scale, -this.scale * aspect, this.scale * aspect, 5.0, 6000.0);
-			this.zoomModified = false;
-			gl.glMatrixMode(5888);
+			this.VisionChanged = false;
+			gl.glMatrixMode(GL2.GL_MODELVIEW);
 		}
 		gl.glLoadIdentity();
 		gl.glTranslatef(0.0f, 0.0f, -50.0f);
@@ -168,7 +179,7 @@ public class MyGLEventListener implements GLEventListener
 
 	public void setScale(final float scale2) {
 		this.scale = scale2;
-		this.zoomModified = true;
+		this.VisionChanged = true;
 	}
 
 }
