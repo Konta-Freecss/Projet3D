@@ -227,12 +227,12 @@ public class MyGLEventListener implements GLEventListener {
 				if(i==0 || j==0){
 					gl.glColor3d(colors.get(i + j), colors.get(i +j), colors.get(i +j));
 				}else gl.glColor3d(colors.get(i * j), colors.get(i * j), colors.get(i * j));
-				gl.glBegin(GL2.GL_VERTEX23_BIT_PGI);
+				gl.glBegin(GL2.GL_TRIANGLES);
 				gl.glVertex3f(sol.get(i + 1)[j].getX(), sol.get(i + 1)[j].getY(), sol.get(i + 1)[j].getZ());
 				gl.glVertex3f(sol.get(i + 1)[j + 1].getX(), sol.get(i + 1)[j + 1].getY(), sol.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(sol.get(i)[j].getX(), sol.get(i)[j].getY(), sol.get(i)[j].getZ());
 				gl.glEnd();
-				gl.glBegin(GL2.GL_VERTEX23_BIT_PGI);
+				gl.glBegin(GL2.GL_TRIANGLES);
 				if(i==0 || j==0){
 					gl.glColor3d(colors.get(i + j), colors.get(i +j), colors.get(i +j));
 				}else gl.glColor3d(colors.get(i * j), colors.get(i * j), colors.get(i * j));
@@ -249,13 +249,13 @@ public class MyGLEventListener implements GLEventListener {
 		gl.glColor3d(0.2, 0.2, 0.2);
 		for (int i = 0; i < this.sousMarin.getMeridiens(); i++) {
 
-			gl.glBegin(GL2ES3.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(this.sousMarin.getPointsC2()[i + 1].getX(), this.sousMarin.getPointsC2()[i + 1].getY(), this.sousMarin.getPointsC2()[i + 1].getZ());
 			gl.glVertex3f(this.sousMarin.getPointsC2()[i + 2].getX(), this.sousMarin.getPointsC2()[i + 2].getY(), this.sousMarin.getPointsC2()[i + 2].getZ());
 			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 2].getX(), this.sousMarin.getPointsC1()[i + 2].getY(), this.sousMarin.getPointsC1()[i + 2].getZ());
 			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 1].getX(), this.sousMarin.getPointsC2()[i + 1].getY(), this.sousMarin.getPointsC1()[i + 1].getZ());
 			gl.glEnd();
-			gl.glBegin(GL2ES3.GL_QUADS);
+			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 1].getX(), this.sousMarin.getPointsC2()[i + 1].getY(), this.sousMarin.getPointsC1()[i + 1].getZ());
 			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 2].getX(), this.sousMarin.getPointsC1()[i + 2].getY(), this.sousMarin.getPointsC1()[i + 2].getZ());
 			gl.glVertex3f(this.sousMarin.getPointsC2()[i + 2].getX(), this.sousMarin.getPointsC2()[i + 2].getY(), this.sousMarin.getPointsC2()[i + 2].getZ());
@@ -270,13 +270,13 @@ public class MyGLEventListener implements GLEventListener {
 			for (int j = 0; j < this.sousMarin.getMeridiens(); j++) {
 				// SPHERE AVANT
 				gl.glColor3d(0.2, 0.2, 0.2);
-				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(faceAvant.get(i)[j].getX(), faceAvant.get(i)[j].getY(), faceAvant.get(i)[j].getZ());
 				gl.glVertex3f(faceAvant.get(i)[j + 1].getX(), faceAvant.get(i)[j + 1].getY(), faceAvant.get(i)[j + 1].getZ());
 				gl.glVertex3f(faceAvant.get(i + 1)[j + 1].getX(), faceAvant.get(i + 1)[j + 1].getY(), faceAvant.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(faceAvant.get(i + 1)[j].getX(), faceAvant.get(i + 1)[j].getY(), faceAvant.get(i + 1)[j].getZ());
 				gl.glEnd();
-				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(faceAvant.get(i + 1)[j].getX(), faceAvant.get(i + 1)[j].getY(), faceAvant.get(i + 1)[j].getZ());
 				gl.glVertex3f(faceAvant.get(i + 1)[j + 1].getX(), faceAvant.get(i + 1)[j + 1].getY(), faceAvant.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(faceAvant.get(i)[j + 1].getX(), faceAvant.get(i)[j + 1].getY(), faceAvant.get(i)[j + 1].getZ());
@@ -285,13 +285,13 @@ public class MyGLEventListener implements GLEventListener {
 
 				// SPHERE ARRIERE
 				gl.glColor3d(0.2, 0.2, 0.2);
-				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(faceArriere.get(i)[j].getX(), faceArriere.get(i)[j].getY(), faceArriere.get(i)[j].getZ());
 				gl.glVertex3f(faceArriere.get(i)[j + 1].getX(), faceArriere.get(i)[j + 1].getY(), faceArriere.get(i)[j + 1].getZ());
 				gl.glVertex3f(faceArriere.get(i + 1)[j + 1].getX(), faceArriere.get(i + 1)[j + 1].getY(), faceArriere.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(faceArriere.get(i + 1)[j].getX(), faceArriere.get(i + 1)[j].getY(), faceArriere.get(i + 1)[j].getZ());
 				gl.glEnd();
-				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(faceArriere.get(i + 1)[j].getX(), faceArriere.get(i + 1)[j].getY(), faceArriere.get(i + 1)[j].getZ());
 				gl.glVertex3f(faceArriere.get(i + 1)[j + 1].getX(), faceArriere.get(i + 1)[j + 1].getY(), faceArriere.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(faceArriere.get(i)[j + 1].getX(), faceArriere.get(i)[j + 1].getY(), faceArriere.get(i)[j + 1].getZ());
@@ -304,7 +304,7 @@ public class MyGLEventListener implements GLEventListener {
 		ArrayList<Point[]> toit = this.sousMarin.getHaut();
 		for (int i = 0; i < this.sousMarin.getMeridiens() * 2 - 1; i++) {
 			for (int j = 0; j < this.sousMarin.getMeridiens(); j++) {
-				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(toit.get(i)[j].getX(), toit.get(i)[j].getY(), toit.get(i)[j].getZ());
 				gl.glVertex3f(toit.get(i)[j + 1].getX(), toit.get(i)[j + 1].getY(), toit.get(i)[j + 1].getZ());
 				gl.glVertex3f(toit.get(i + 1)[j + 1].getX(), toit.get(i + 1)[j + 1].getY(), toit.get(i + 1)[j + 1].getZ());
@@ -321,13 +321,13 @@ public class MyGLEventListener implements GLEventListener {
 
 		for (int i = 0; i < this.sousMarin.getMeridiens() * 2 - 1; i++) {
 			for (int j = 0; j < this.sousMarin.getMeridiens(); j++) {
-				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(helice1.get(i)[j].getX(), helice1.get(i)[j].getY(), helice1.get(i)[j].getZ());
 				gl.glVertex3f(helice1.get(i)[j + 1].getX(), helice1.get(i)[j + 1].getY(), helice1.get(i)[j + 1].getZ());
 				gl.glVertex3f(helice1.get(i + 1)[j + 1].getX(), helice1.get(i + 1)[j + 1].getY(), helice1.get(i + 1)[j + 1].getZ());
 				gl.glVertex3f(helice1.get(i + 1)[j].getX(), helice1.get(i + 1)[j].getY(), helice1.get(i + 1)[j].getZ());
 				gl.glEnd();
-				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(helice2.get(i)[j].getX(), helice2.get(i)[j].getY(), helice2.get(i)[j].getZ());
 				gl.glVertex3f(helice2.get(i)[j + 1].getX(), helice2.get(i)[j + 1].getY(), helice2.get(i)[j + 1].getZ());
 				gl.glVertex3f(helice2.get(i + 1)[j + 1].getX(), helice2.get(i + 1)[j + 1].getY(), helice2.get(i + 1)[j + 1].getZ());
