@@ -16,11 +16,10 @@ public class MyGLEventListener implements GLEventListener {
 
 	GLUT glut;
 	GLU glu;
-	float angle = (float) Math.toDegrees(2*Math.PI) ;
-	float delta=0.0f;
-	private float rotX = 0;
-	private float transx = 0;
-	private float transz = 0;
+	float helRot=0.0f;			//Angle de l'hélice
+	private float rotX = 0;		//Angle du sous marin par rapport à l'axe X
+	private float transx = 0;	//Position du sous marin sur X
+	private float transz = 0;	//Position du sous marin sur Z
 
 	//About the camera and the visualization
 	SceneMouseAdapter objectMouse;
@@ -46,17 +45,6 @@ public class MyGLEventListener implements GLEventListener {
 	float light_position3[] = { 0.0f, 0.0f, -10.0f, 0.0f };
 
 
-	//////////////////////////////////////////////////////////////////////////////////////////////:
-	// TO FILL
-
-
-	/**
-	 * The init() method is called when a new OpenGL context is created for the given GLAutoDrawable.
-	 * Any display lists or textures used during the application's normal rendering loop can be safely
-	 * initialized in init(). The GLEventListener's init() method may be called more than once during
-	 * the lifetime of the application. The init() method should therefore be kept as short as possible
-	 * and only contain the OpenGL initialization required for the display() method to run properly.
-	 */
 	public void init(GLAutoDrawable drawable) {
 
 		GL2 gl = drawable.getGL().getGL2();
@@ -112,17 +100,8 @@ public class MyGLEventListener implements GLEventListener {
 		glu =  new GLU();
 		this.fondMarin = new FondMarin(50);
 		this.sousMarin = new SousMarin();
-
-		/////////////////////////////////////////////////////////////////////////////////////
-		//TO FILL
-		//gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);
-		//...
 	}
 
-
-	/**
-	 * Called when the drawable has been resized
-	 */
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
@@ -140,19 +119,12 @@ public class MyGLEventListener implements GLEventListener {
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
 
-
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-
 	}
 
-
-	/**
-	 * Called to perform per-frame rendering.
-	 */
 	public void display(GLAutoDrawable drawable) {
 
-		// Get the GL corresponding to the drawable we are animating
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
@@ -164,44 +136,22 @@ public class MyGLEventListener implements GLEventListener {
 		gl.glRotatef(view_rotx, 1.0f, 0.0f, 0.0f);
 		gl.glRotatef(view_roty, 0.0f, 1.0f, 0.0f);
 
-
-
-		/////////////////////////////////////////////////////////////////////////////////
-		//TO FILL
 		gl.glPushMatrix();
-		CreationMonde(gl);
+		CreationMonde(gl);	//On créer le fond marin et le background
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
-		gl.glScalef(1,1,1);
-		gl.glBegin(gl.GL_LINES);
-		gl.glVertex3d(0,0,0);
-		gl.glVertex3d(1,0,0);
-		gl.glVertex3d(0,0,0);
-		gl.glVertex3d(0,1,0);
-		gl.glVertex3d(0,0,0);
-		gl.glVertex3d(0,0,1);
-		gl.glEnd();
-		gl.glPopMatrix();
-
-		gl.glPushMatrix();
-		gl.glTranslatef(transx,0.0f,-transz); // Avancer / reculer
-		gl.glRotatef(rotX,0,1,0);
+		gl.glTranslatef(transx,0.0f,-transz); // Avancer et reculer
+		gl.glRotatef(rotX,0,1,0);	 // Rotation du sous marin
 		CreationSousMarin(gl);
 		gl.glPopMatrix();
 
-
-
-		delta+=angle/100.0f;
-		if(delta>=angle) {
-			delta=0f;
-		}
 	}
 
 	public void CreationMonde(GL2 gl){
 		Point[] points = this.fondMarin.getPoints();
 
-		//Mur
+		//Murs
 		gl.glColor3d(0.706, 1.0, 1.0);
 		gl.glBegin(7);
 		gl.glVertex3f(points[3].getX(), points[3].getY(), points[3].getZ());
@@ -327,8 +277,8 @@ public class MyGLEventListener implements GLEventListener {
 		}
 
 		gl.glPushMatrix();
-		gl.glTranslatef(0.0f,0.0f,2.07f); //Avancer / reculer pour l'hélice
-		gl.glRotatef(60*-delta,0,0,1);
+		gl.glTranslatef(0.0f,0.0f,2.07f); //Positionnement de l'hélice sur le sous marin
+		gl.glRotatef(helRot,0,0,1);		//Gestion de la rotation de l'hélice
 		CreationHelice(gl);
 		gl.glPopMatrix();
 
@@ -357,8 +307,6 @@ public class MyGLEventListener implements GLEventListener {
 		}
 	}
 
-	//GETTER AND SETTER
-	//*************************************************************
 	public float getView_rotx() {
 		return view_rotx;
 	}
@@ -390,10 +338,12 @@ public class MyGLEventListener implements GLEventListener {
 
 	public void setTranslx(float add) {
 		this.transx = transx+add;
-	}
+	} 	// Met à jour la position sur X
 	public void setTranslz(float add) {
 		this.transz = transz+add;
-	}
-
+	}		// Met à jour la position sur Z
+	public void setHelRot(float add) {
+		this.helRot = helRot+add;
+	}	//Met à jour la rotation de l'hélice
 
 }
