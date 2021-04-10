@@ -18,6 +18,9 @@ public class MyGLEventListener implements GLEventListener {
 	GLU glu;
 	float angle = (float) Math.toDegrees(2*Math.PI) ;
 	float delta=0.0f;
+	private float rotX = 0;
+	private float transx = 0;
+	private float transz = 0;
 
 	//About the camera and the visualization
 	SceneMouseAdapter objectMouse;
@@ -107,7 +110,7 @@ public class MyGLEventListener implements GLEventListener {
 
 		glut =  new GLUT();
 		glu =  new GLU();
-		this.fondMarin = new FondMarin(10);
+		this.fondMarin = new FondMarin(50);
 		this.sousMarin = new SousMarin();
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -170,14 +173,24 @@ public class MyGLEventListener implements GLEventListener {
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
-		CreationSousMarin(gl);
+		gl.glScalef(1,1,1);
+		gl.glBegin(gl.GL_LINES);
+		gl.glVertex3d(0,0,0);
+		gl.glVertex3d(1,0,0);
+		gl.glVertex3d(0,0,0);
+		gl.glVertex3d(0,1,0);
+		gl.glVertex3d(0,0,0);
+		gl.glVertex3d(0,0,1);
+		gl.glEnd();
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
-		gl.glTranslatef(0,0,2.07f);
-		gl.glRotatef(-delta,0,0,1);
-		CreationHelice(gl);
+		gl.glTranslatef(transx,0.0f,-transz); // Avancer / reculer
+		gl.glRotatef(rotX,0,1,0);
+		CreationSousMarin(gl);
 		gl.glPopMatrix();
+
+
 
 		delta+=angle/100.0f;
 		if(delta>=angle) {
@@ -312,6 +325,13 @@ public class MyGLEventListener implements GLEventListener {
 				gl.glEnd();
 			}
 		}
+
+		gl.glPushMatrix();
+		gl.glTranslatef(0.0f,0.0f,2.07f); //Avancer / reculer pour l'hélice
+		gl.glRotatef(60*-delta,0,0,1);
+		CreationHelice(gl);
+		gl.glPopMatrix();
+
 	}
 
 	public void CreationHelice(GL2 gl){
@@ -342,27 +362,38 @@ public class MyGLEventListener implements GLEventListener {
 	public float getView_rotx() {
 		return view_rotx;
 	}
-
 	public void setView_rotx(float view_rotx) {
 		this.view_rotx = view_rotx;
 	}
-
 	public float getView_roty() {
 		return view_roty;
 	}
-
 	public void setView_roty(float view_roty) {
 		this.view_roty = view_roty;
 	}
-
 	public float getScale() {
 		return scale;
 	}
-
 	public void setScale(float scale2) {
 		this.scale = scale2;
 	}
 
+	public void setRotX(float add) {
+		if (rotX+add == 360 || rotX+add == -360) {
+			rotX = 0;
+		}
+		else {rotX+=add;}
+	}
+	public float getRotX() {
+		return rotX;
+	}
+
+	public void setTranslx(float add) {
+		this.transx = transx+add;
+	}
+	public void setTranslz(float add) {
+		this.transz = transz+add;
+	}
 
 
 }

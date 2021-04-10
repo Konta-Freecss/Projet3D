@@ -1,6 +1,7 @@
 package Projet;
 import com.jogamp.newt.event.KeyAdapter;
 import com.jogamp.newt.event.KeyEvent;
+import java.lang.Math;
 
 
 class SceneKeyAdapter extends KeyAdapter {
@@ -35,32 +36,36 @@ class SceneKeyAdapter extends KeyAdapter {
             //System.out.println("Key pressed: zoom out");
         }
 
-        if(KeyEvent.VK_LEFT == kc) {
-            view_roty -= 1;
-            //System.out.println("Key pressed: view_roty="+view_roty);
+        else if (kc == 149) {
+            myGLEventListener.setRotX(2);
+            myGLEventListener.setTranslx(-0.2f* (float)Math.sin(myGLEventListener.getRotX()*Math.PI/180) );
+            myGLEventListener.setTranslz(0.2f* (float)Math.cos(myGLEventListener.getRotX()*Math.PI/180) );
+            System.out.println("gauche");
+        }
+        else if (kc == 151) {
+            myGLEventListener.setRotX(-2);
+            myGLEventListener.setTranslx(-0.2f* (float)Math.sin(myGLEventListener.getRotX()*Math.PI/180) );
+            myGLEventListener.setTranslz(0.2f* (float)Math.cos(myGLEventListener.getRotX()*Math.PI/180) );
+            System.out.println("droite");
         }
 
-        else if(KeyEvent.VK_RIGHT == kc) {
-            view_roty += 1;
-            //System.out.println("Key pressed: view_roty="+view_roty);
+
+        else if (kc == 150) {
+            myGLEventListener.setTranslx(-0.2f* (float)Math.sin(myGLEventListener.getRotX()*Math.PI/180) );
+            myGLEventListener.setTranslz(0.2f* (float)Math.cos(myGLEventListener.getRotX()*Math.PI/180) );
+            System.out.println("haut");
+        }
+        else if (kc == 152) {
+            myGLEventListener.setTranslx(0.2f* (float)Math.sin(myGLEventListener.getRotX()*Math.PI/180) );
+            myGLEventListener.setTranslz(-0.2f* (float)Math.cos(myGLEventListener.getRotX()*Math.PI/180) );
+            System.out.println("bas");
         }
 
-        else if(KeyEvent.VK_UP == kc) {
-            view_rotx -= 1;
-            //System.out.println("Key pressed: view_rotx="+view_rotx);
-        }
 
-        else if(KeyEvent.VK_DOWN == kc) {
-            view_rotx += 1;
-            //System.out.println("Key pressed: view_rotx="+view_rotx);
-        }
-        else {
-            //System.out.println(e.getKeyCode());
-        }
 
         myGLEventListener.setView_rotx(view_rotx);
         myGLEventListener.setView_roty(view_roty);
-        myGLEventListener.setScale(zoom);
+
     }
 
     public float getScale() {
