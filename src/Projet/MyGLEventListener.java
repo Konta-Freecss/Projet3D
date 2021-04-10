@@ -1,9 +1,6 @@
 package Projet;
 
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.*;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.newt.Window;
@@ -19,6 +16,8 @@ public class MyGLEventListener implements GLEventListener {
 
 	GLUT glut;
 	GLU glu;
+	float angle = (float) Math.toDegrees(2*Math.PI) ;
+	float delta=0.0f;
 
 	//About the camera and the visualization
 	SceneMouseAdapter objectMouse;
@@ -27,7 +26,8 @@ public class MyGLEventListener implements GLEventListener {
 	private float view_rotx = 0.0f, view_roty = 0.0f;
 	private float scale = 1.0f;
 	private float aspect;
-	FondMarin fondMarin;
+	private FondMarin fondMarin;
+	private SousMarin sousMarin;
 
 	//Predefined colors
 	float red[] = { 0.8f, 0.1f, 0.0f, 0.7f };
@@ -108,9 +108,11 @@ public class MyGLEventListener implements GLEventListener {
 		glut =  new GLUT();
 		glu =  new GLU();
 		this.fondMarin = new FondMarin(10);
+		this.sousMarin = new SousMarin();
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//TO FILL
+		//gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);
 		//...
 	}
 
@@ -150,7 +152,6 @@ public class MyGLEventListener implements GLEventListener {
 		// Get the GL corresponding to the drawable we are animating
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-
 		gl.glLoadIdentity();
 
 		glu.gluLookAt(camera[0], camera[1], camera[2]+scale,
@@ -164,13 +165,28 @@ public class MyGLEventListener implements GLEventListener {
 
 		/////////////////////////////////////////////////////////////////////////////////
 		//TO FILL
+		gl.glPushMatrix();
+		CreationMonde(gl);
+		gl.glPopMatrix();
 
-		monde(gl);
+		gl.glPushMatrix();
+		CreationSousMarin(gl);
+		gl.glPopMatrix();
+
+		gl.glPushMatrix();
+		gl.glTranslatef(0,0,2.07f);
+		gl.glRotatef(-delta,0,0,1);
+		CreationHelice(gl);
+		gl.glPopMatrix();
+
+		delta+=angle/100.0f;
+		if(delta>=angle) {
+			delta=0f;
+		}
 	}
 
-	public void monde(GL2 gl){
+	public void CreationMonde(GL2 gl){
 		Point[] points = this.fondMarin.getPoints();
-
 
 		//Mur
 		gl.glColor3d(0.706, 1.0, 1.0);
@@ -228,6 +244,98 @@ public class MyGLEventListener implements GLEventListener {
 		}
 	}
 
+	public void CreationSousMarin(GL2 gl) {
+		// CYLINDRE
+		gl.glColor3d(0.2, 0.2, 0.2);
+		for (int i = 0; i < this.sousMarin.getMeridiens(); i++) {
+
+			gl.glBegin(GL2ES3.GL_QUADS);
+			gl.glVertex3f(this.sousMarin.getPointsC2()[i + 1].getX(), this.sousMarin.getPointsC2()[i + 1].getY(), this.sousMarin.getPointsC2()[i + 1].getZ());
+			gl.glVertex3f(this.sousMarin.getPointsC2()[i + 2].getX(), this.sousMarin.getPointsC2()[i + 2].getY(), this.sousMarin.getPointsC2()[i + 2].getZ());
+			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 2].getX(), this.sousMarin.getPointsC1()[i + 2].getY(), this.sousMarin.getPointsC1()[i + 2].getZ());
+			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 1].getX(), this.sousMarin.getPointsC2()[i + 1].getY(), this.sousMarin.getPointsC1()[i + 1].getZ());
+			gl.glEnd();
+			gl.glBegin(GL2ES3.GL_QUADS);
+			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 1].getX(), this.sousMarin.getPointsC2()[i + 1].getY(), this.sousMarin.getPointsC1()[i + 1].getZ());
+			gl.glVertex3f(this.sousMarin.getPointsC1()[i + 2].getX(), this.sousMarin.getPointsC1()[i + 2].getY(), this.sousMarin.getPointsC1()[i + 2].getZ());
+			gl.glVertex3f(this.sousMarin.getPointsC2()[i + 2].getX(), this.sousMarin.getPointsC2()[i + 2].getY(), this.sousMarin.getPointsC2()[i + 2].getZ());
+			gl.glVertex3f(this.sousMarin.getPointsC2()[i + 1].getX(), this.sousMarin.getPointsC2()[i + 1].getY(), this.sousMarin.getPointsC2()[i + 1].getZ());
+			gl.glEnd();
+		}
+
+		// SPHERE
+		ArrayList<Point[]> faceAvant = this.sousMarin.getFaceAvant();
+		ArrayList<Point[]> faceArriere = this.sousMarin.getFaceArriere();
+		for (int i = 0; i < this.sousMarin.getMeridiens() - 1; i++) {
+			for (int j = 0; j < this.sousMarin.getMeridiens(); j++) {
+				// SPHERE AVANT
+				gl.glColor3d(0.2, 0.2, 0.2);
+				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glVertex3f(faceAvant.get(i)[j].getX(), faceAvant.get(i)[j].getY(), faceAvant.get(i)[j].getZ());
+				gl.glVertex3f(faceAvant.get(i)[j + 1].getX(), faceAvant.get(i)[j + 1].getY(), faceAvant.get(i)[j + 1].getZ());
+				gl.glVertex3f(faceAvant.get(i + 1)[j + 1].getX(), faceAvant.get(i + 1)[j + 1].getY(), faceAvant.get(i + 1)[j + 1].getZ());
+				gl.glVertex3f(faceAvant.get(i + 1)[j].getX(), faceAvant.get(i + 1)[j].getY(), faceAvant.get(i + 1)[j].getZ());
+				gl.glEnd();
+				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glVertex3f(faceAvant.get(i + 1)[j].getX(), faceAvant.get(i + 1)[j].getY(), faceAvant.get(i + 1)[j].getZ());
+				gl.glVertex3f(faceAvant.get(i + 1)[j + 1].getX(), faceAvant.get(i + 1)[j + 1].getY(), faceAvant.get(i + 1)[j + 1].getZ());
+				gl.glVertex3f(faceAvant.get(i)[j + 1].getX(), faceAvant.get(i)[j + 1].getY(), faceAvant.get(i)[j + 1].getZ());
+				gl.glVertex3f(faceAvant.get(i)[j].getX(), faceAvant.get(i)[j].getY(), faceAvant.get(i)[j].getZ());
+				gl.glEnd();
+
+				// SPHERE ARRIERE
+				gl.glColor3d(0.2, 0.2, 0.2);
+				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glVertex3f(faceArriere.get(i)[j].getX(), faceArriere.get(i)[j].getY(), faceArriere.get(i)[j].getZ());
+				gl.glVertex3f(faceArriere.get(i)[j + 1].getX(), faceArriere.get(i)[j + 1].getY(), faceArriere.get(i)[j + 1].getZ());
+				gl.glVertex3f(faceArriere.get(i + 1)[j + 1].getX(), faceArriere.get(i + 1)[j + 1].getY(), faceArriere.get(i + 1)[j + 1].getZ());
+				gl.glVertex3f(faceArriere.get(i + 1)[j].getX(), faceArriere.get(i + 1)[j].getY(), faceArriere.get(i + 1)[j].getZ());
+				gl.glEnd();
+				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glVertex3f(faceArriere.get(i + 1)[j].getX(), faceArriere.get(i + 1)[j].getY(), faceArriere.get(i + 1)[j].getZ());
+				gl.glVertex3f(faceArriere.get(i + 1)[j + 1].getX(), faceArriere.get(i + 1)[j + 1].getY(), faceArriere.get(i + 1)[j + 1].getZ());
+				gl.glVertex3f(faceArriere.get(i)[j + 1].getX(), faceArriere.get(i)[j + 1].getY(), faceArriere.get(i)[j + 1].getZ());
+				gl.glVertex3f(faceArriere.get(i)[j].getX(), faceArriere.get(i)[j].getY(), faceArriere.get(i)[j].getZ());
+				gl.glEnd();
+			}
+		}
+		// TOIT
+		gl.glColor3d(0.3, 0.3, 0.3);
+		ArrayList<Point[]> toit = this.sousMarin.getHaut();
+		for (int i = 0; i < this.sousMarin.getMeridiens() * 2 - 1; i++) {
+			for (int j = 0; j < this.sousMarin.getMeridiens(); j++) {
+				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glVertex3f(toit.get(i)[j].getX(), toit.get(i)[j].getY(), toit.get(i)[j].getZ());
+				gl.glVertex3f(toit.get(i)[j + 1].getX(), toit.get(i)[j + 1].getY(), toit.get(i)[j + 1].getZ());
+				gl.glVertex3f(toit.get(i + 1)[j + 1].getX(), toit.get(i + 1)[j + 1].getY(), toit.get(i + 1)[j + 1].getZ());
+				gl.glVertex3f(toit.get(i + 1)[j].getX(), toit.get(i + 1)[j].getY(), toit.get(i + 1)[j].getZ());
+				gl.glEnd();
+			}
+		}
+	}
+
+	public void CreationHelice(GL2 gl){
+		ArrayList<Point[]> helice1 = this.sousMarin.getHelice1();
+		ArrayList<Point[]> helice2 = this.sousMarin.getHelice2();
+		gl.glColor3d(0.3, 0.3, 0.3);
+
+		for (int i = 0; i < this.sousMarin.getMeridiens() * 2 - 1; i++) {
+			for (int j = 0; j < this.sousMarin.getMeridiens(); j++) {
+				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glVertex3f(helice1.get(i)[j].getX(), helice1.get(i)[j].getY(), helice1.get(i)[j].getZ());
+				gl.glVertex3f(helice1.get(i)[j + 1].getX(), helice1.get(i)[j + 1].getY(), helice1.get(i)[j + 1].getZ());
+				gl.glVertex3f(helice1.get(i + 1)[j + 1].getX(), helice1.get(i + 1)[j + 1].getY(), helice1.get(i + 1)[j + 1].getZ());
+				gl.glVertex3f(helice1.get(i + 1)[j].getX(), helice1.get(i + 1)[j].getY(), helice1.get(i + 1)[j].getZ());
+				gl.glEnd();
+				gl.glBegin(GL2ES3.GL_QUADS);
+				gl.glVertex3f(helice2.get(i)[j].getX(), helice2.get(i)[j].getY(), helice2.get(i)[j].getZ());
+				gl.glVertex3f(helice2.get(i)[j + 1].getX(), helice2.get(i)[j + 1].getY(), helice2.get(i)[j + 1].getZ());
+				gl.glVertex3f(helice2.get(i + 1)[j + 1].getX(), helice2.get(i + 1)[j + 1].getY(), helice2.get(i + 1)[j + 1].getZ());
+				gl.glVertex3f(helice2.get(i + 1)[j].getX(), helice2.get(i + 1)[j].getY(), helice2.get(i + 1)[j].getZ());
+				gl.glEnd();
+			}
+		}
+	}
 
 	//GETTER AND SETTER
 	//*************************************************************
