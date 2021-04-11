@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class FondMarin
 {
     private Point[] Points;
+    /**
+     * Liste des points que comporte le fond marin
+     */
     private ArrayList<Point[]> PointSols;
     private int taille;
     private ArrayList<Float> couleur;
@@ -16,7 +19,10 @@ public class FondMarin
         this.couleur = new ArrayList<>();
         CreationMonde();
     }
-    
+
+    /**
+     * Créer le cube qui nous sert d'environnement
+     */
     public void CreationMonde() {
         this.Points[0] = new Point((float) this.taille, (float) this.taille, (float) this.taille);
         this.Points[1] = new Point((float) -this.taille, (float) this.taille, (float) this.taille);
@@ -29,6 +35,10 @@ public class FondMarin
         CreationSol();
     }
 
+
+    /**
+     * Création du fond marin
+     */
     private void CreationSol(){
         for (int j = 0; j < this.taille + 1; j++) {
             final Point[] p = new Point[this.taille + 1];

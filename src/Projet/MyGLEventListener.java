@@ -14,18 +14,25 @@ import java.util.ArrayList;
 public class MyGLEventListener implements GLEventListener {
 
 
-	/**
-	 * helRot : Comporte l'angle de l'hélice
-	 * rotX : Comporte l'angle du sous marin par rapport à l'axe X
-	 * transx : Comporte la position du sous marin sur X
-	 * transz : Comporte la position du sous marin sur Z
-	 */
 
-	GLUT glut;
-	GLU glu;
+
+	private GLUT glut;
+	private GLU glu;
+	/**
+	 * Comporte l'angle de l'hélice
+	 */
 	float helRot=0.0f;
+	/**
+	 * Comporte l'angle du sous marin par rapport à l'axe X
+	 */
 	private float rotX = 0;
+	/**
+	 * Comporte la position du sous marin sur X
+	 */
 	private float transx = 0;
+	/**
+	 * Comporte la position du sous marin sur Z
+	 */
 	private float transz = 0;
 
 	//About the camera and the visualization
@@ -35,7 +42,14 @@ public class MyGLEventListener implements GLEventListener {
 	private float view_rotx = 0.0f, view_roty = 0.0f;
 	private float scale = 1.0f;
 	private float aspect;
+
+	/**
+	 * Variable comportant la structure du fond marin et qui prend en parametre la taille de celui-ci
+	 */
 	private FondMarin fondMarin;
+	/**
+	 * Variable comportant la structure du sous-marin
+	 */
 	private SousMarin sousMarin;
 
 	//Predefined colors
@@ -106,10 +120,8 @@ public class MyGLEventListener implements GLEventListener {
 		glut =  new GLUT();
 		glu =  new GLU();
 
-		/**
-		 * Initialisation des deux variables "fondMarin" et "sousMarin"
-		 * FondMarin prend en parametre la taille du monde
-		 */
+		//Initialisation des deux variables "fondMarin" et "sousMarin"
+		//FondMarin prend en parametre la taille du monde
 		this.fondMarin = new FondMarin(10);
 		this.sousMarin = new SousMarin();
 	}
@@ -148,20 +160,12 @@ public class MyGLEventListener implements GLEventListener {
 		gl.glRotatef(view_rotx, 1.0f, 0.0f, 0.0f);
 		gl.glRotatef(view_roty, 0.0f, 1.0f, 0.0f);
 
-		/**
-		 * A l'intérieur d'une matrice :
-		 * Création du monde avec la distinction du haut ( sans le bas )
-		 * Création du fond marin ( le bas du cube )
-		 */
+
 		gl.glPushMatrix();
 		CreationMonde(gl);
 		gl.glPopMatrix();
 
-		/**
-		 * A l'intérieur d'une matrice :
-		 * Création du sous-marin.
-		 * Prise en compte du mouvement et de la rotation du sous-marin
-		 */
+		//Prise en compte du mouvement et de la rotation du sous-marin
 		gl.glPushMatrix();
 		gl.glTranslatef(transx,0.0f,-transz); // Avancer et reculer
 		gl.glRotatef(rotX,0,1,0);	 // Rotation du sous marin
@@ -170,12 +174,17 @@ public class MyGLEventListener implements GLEventListener {
 
 	}
 
+	/**
+	 * Situer a l'intérieur d'une matrice
+	 * Création du monde ( sans le bas ) avec la distinction du haut
+	 * Création du fond marin ( le bas du cube )
+	 */
 	public void CreationMonde(GL2 gl){
 		Point[] points = this.fondMarin.getPoints();
 
-		/**
-		 * Affichage des parois du cube
-		 */
+
+		//Affichage des parois du cube
+
 		gl.glColor3d(0.2, 0.5, 1.0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(points[3].getX(), points[3].getY(), points[3].getZ());
@@ -198,9 +207,9 @@ public class MyGLEventListener implements GLEventListener {
 		gl.glVertex3f(points[4].getX(), points[4].getY(), points[4].getZ());
 		gl.glVertex3f(points[5].getX(), points[5].getY(), points[5].getZ());
 
-		/**
-		 * Affichage du haut du cube
-		 */
+
+		//Affichage du haut du cube
+
 		gl.glColor3d(0.1, 0.1, 1.0);
 		gl.glVertex3f(points[1].getX(), points[1].getY(), points[1].getZ());
 		gl.glVertex3f(points[5].getX(), points[5].getY(), points[5].getZ());
@@ -208,9 +217,7 @@ public class MyGLEventListener implements GLEventListener {
 		gl.glVertex3f(points[0].getX(), points[0].getY(), points[0].getZ());
 		gl.glEnd();
 
-		/**
-		 * Récupération des données et affichage des différent points que comport le fond marin
-		 */
+		//Récupération des données et affichage des différent points que comport le fond marin
 		ArrayList<Point[]> sol = this.fondMarin.getPointSols();
 		ArrayList<Float> colors = this.fondMarin.getCouleur();
 		for (int i = 0; i < this.fondMarin.getTaille() ; i++) {
@@ -243,10 +250,15 @@ public class MyGLEventListener implements GLEventListener {
 		}
 	}
 
+	/**
+	 * Situer a l'intérieur d'une matrice
+	 * Création du sous-marin.
+	 * Prise en compte du mouvement et de la rotation du sous-marin et de son helice
+	 */
 	public void CreationSousMarin(GL2 gl) {
-		/**
-		 * Affichage du cylindre du sous-marin
-		 */
+
+		 //Affichage du cylindre du sous-marin
+
 		gl.glColor3d(0.2, 0.2, 0.2);
 		for (int i = 0; i < this.sousMarin.getMeridiens(); i++) {
 
@@ -264,9 +276,9 @@ public class MyGLEventListener implements GLEventListener {
 			gl.glEnd();
 		}
 
-		/**
-		 * Affichage des spheres avant et arriere du sous-marin
-		 */
+
+		 //Affichage des spheres avant et arriere du sous-marin
+
 		ArrayList<Point[]> faceAvant = this.sousMarin.getFaceAvant();
 		ArrayList<Point[]> faceArriere = this.sousMarin.getFaceArriere();
 		for (int i = 0; i < this.sousMarin.getMeridiens() - 1; i++) {
@@ -302,9 +314,9 @@ public class MyGLEventListener implements GLEventListener {
 				gl.glEnd();
 			}
 		}
-		/**
-		 * Affichage de la sphere qui dessigne le toit du sous-marin
-		 */
+
+		 //Affichage de la sphere qui dessigne le toit du sous-marin
+
 		gl.glColor3d(0.3, 0.3, 0.3);
 		ArrayList<Point[]> toit = this.sousMarin.getHaut();
 		for (int i = 0; i < this.sousMarin.getMeridiens() * 2 - 1; i++) {
@@ -318,9 +330,9 @@ public class MyGLEventListener implements GLEventListener {
 			}
 		}
 
-		/**
-		 * Création d'une nouvelle matrice pour l'implémentation de l'helice et de sa rotation
-		 */
+
+		//Création d'une nouvelle matrice pour l'implémentation de l'helice et de sa rotation
+
 		gl.glPushMatrix();
 		gl.glTranslatef(0.0f,0.0f,2.07f); //Positionnement de l'hélice sur le sous marin
 		gl.glRotatef(helRot,0,0,1);		//Gestion de la rotation de l'hélice
@@ -331,6 +343,7 @@ public class MyGLEventListener implements GLEventListener {
 
 	/**
 	 * Affichage de l'helice
+	 * implémentation de l'helice et de sa rotation
 	 */
 	public void CreationHelice(GL2 gl){
 		ArrayList<Point[]> helice1 = this.sousMarin.getHelice1();

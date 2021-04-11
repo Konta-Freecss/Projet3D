@@ -56,8 +56,13 @@ class SceneKeyAdapter extends KeyAdapter {
 
     }
 
-    public void Avancer(boolean sens, float vitesse) { // Fonction qui gère la translation avant/arrière du sous marin : true pour avancer, false pour reculer
-        if (sens==true) {
+    /**
+     * @param sens
+     * @param vitesse
+     * Fonction qui gère la translation avant/arrière du sous marin : true pour avancer, false pour reculer
+     */
+    public void Avancer(boolean sens, float vitesse) {
+        if (sens) {
             myGLEventListener.setTranslx(-vitesse * (float) Math.sin(myGLEventListener.getRotX() * Math.PI / 180)); //On modifie simplement les coordonnée sur X et Z
             myGLEventListener.setTranslz(vitesse * (float) Math.cos(myGLEventListener.getRotX() * Math.PI / 180));
             myGLEventListener.setHelRot(30);    //Et on met la rotation de l'hélice

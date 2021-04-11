@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SousMarin {
     /**
-     * Création de variable
+     * Création de variable pi
      */
     private double pi = Math.PI;
     private double demi = 90*(Math.PI/180);
@@ -47,6 +47,9 @@ public class SousMarin {
         CreateHelice();
     }
 
+    /**
+     * Création du cylindre
+     */
     public void CreateCylindre(){
         this.pointsC1[0] = new Point(0.0f, 0.0f, this.hauteur );
         this.pointsC2[0] = new Point(0.0f, 0.0f, -this.hauteur);
@@ -56,6 +59,9 @@ public class SousMarin {
         }
     }
 
+    /**
+     * Création des spheres avant et arriere
+     */
     public void CreateSphere(){
         int cpt; // compteur
         // Sphere avant
@@ -83,7 +89,9 @@ public class SousMarin {
         }
     }
 
-    // Sphere haut
+    /**
+     * Création du haut du sous-marin
+     */
     public void CreateHaut(){
         int cpt;
         for (float i = (float) (-demi); i <= demi; i += (float)(demi / this.meridiens)) {
@@ -98,6 +106,9 @@ public class SousMarin {
         }
     }
 
+    /**
+     * Création de l'hélice
+     */
     public void CreateHelice(){
         int cpt;
         for (float i = (float) (-demi); i <= demi; i += (float)(demi / this.meridiens)) {
