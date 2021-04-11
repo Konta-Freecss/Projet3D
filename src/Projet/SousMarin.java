@@ -3,6 +3,9 @@ package Projet;
 import java.util.ArrayList;
 
 public class SousMarin {
+    /**
+     * Création de variable
+     */
     private double pi = Math.PI;
     private double demi = 90*(Math.PI/180);
 
@@ -22,6 +25,9 @@ public class SousMarin {
     private float hauteur;
 
 
+    /**
+     * Constructeur du sous-marin
+     */
     public SousMarin() {
         this.rayon = 0.5f;
         this.hauteur = 1.5f;

@@ -1,13 +1,8 @@
 package Projet;
 
-import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
-import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.util.FPSAnimator;
-import java.awt.Component;
-import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.GLCapabilitiesImmutable;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;

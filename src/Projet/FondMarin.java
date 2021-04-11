@@ -4,64 +4,55 @@ import java.util.ArrayList;
 
 public class FondMarin
 {
-    private Point[] points;
-    private ArrayList<Point[]> pointsSol;
+    private Point[] Points;
+    private ArrayList<Point[]> PointSols;
     private int taille;
-    private ArrayList<Float> couleurSol;
+    private ArrayList<Float> couleur;
     
     public FondMarin(final int taille) {
         this.taille = taille;
-        this.points = new Point[8];
-        this.pointsSol = new ArrayList<Point[]>();
-        this.couleurSol = new ArrayList<Float>();
-        this.init();
+        this.Points = new Point[8];
+        this.PointSols = new ArrayList<>();
+        this.couleur = new ArrayList<>();
+        CreationMonde();
     }
     
-    public void init() {
-        this.points[0] = new Point(Float.valueOf(this.taille), Float.valueOf(this.taille), Float.valueOf(this.taille));
-        this.points[1] = new Point(Float.valueOf(-this.taille), Float.valueOf(this.taille), Float.valueOf(this.taille));
-        this.points[2] = new Point(Float.valueOf(-this.taille), Float.valueOf(-this.taille), Float.valueOf(this.taille));
-        this.points[3] = new Point(Float.valueOf(this.taille), Float.valueOf(-this.taille), Float.valueOf(this.taille));
-        this.points[4] = new Point(Float.valueOf(this.taille), Float.valueOf(this.taille), Float.valueOf(-this.taille));
-        this.points[5] = new Point(Float.valueOf(-this.taille), Float.valueOf(this.taille), Float.valueOf(-this.taille));
-        this.points[6] = new Point(Float.valueOf(-this.taille), Float.valueOf(-this.taille), Float.valueOf(-this.taille));
-        this.points[7] = new Point(Float.valueOf(this.taille), Float.valueOf(-this.taille), Float.valueOf(-this.taille));
-
-        sol();
+    public void CreationMonde() {
+        this.Points[0] = new Point((float) this.taille, (float) this.taille, (float) this.taille);
+        this.Points[1] = new Point((float) -this.taille, (float) this.taille, (float) this.taille);
+        this.Points[2] = new Point((float) -this.taille, (float) -this.taille, (float) this.taille);
+        this.Points[3] = new Point((float) this.taille, (float) -this.taille, (float) this.taille);
+        this.Points[4] = new Point((float) this.taille, (float) this.taille, (float) -this.taille);
+        this.Points[5] = new Point((float) -this.taille, (float) this.taille, (float) -this.taille);
+        this.Points[6] = new Point((float) -this.taille, (float) -this.taille, (float) -this.taille);
+        this.Points[7] = new Point((float) this.taille, (float) -this.taille, (float) -this.taille);
+        CreationSol();
     }
 
-    private void sol(){
+    private void CreationSol(){
         for (int j = 0; j < this.taille + 1; j++) {
-            final Point[] tab = new Point[this.taille + 1];
+            final Point[] p = new Point[this.taille + 1];
             for (int i = 0; i < this.taille + 1; i++) {
-                tab[i] = new Point(-this.taille + i * 2.0f, -this.taille + (float)Math.random() * 0.17f * this.taille, -this.taille + j * 2.0f);
-                this.couleurSol.add((float)(Math.random() * 0.5) + 0.3f);
+                p[i] = new Point(-this.taille + i * 2.0f, -this.taille + (float)Math.random() * 0.24f * this.taille, -this.taille + j * 2.0f);
+                this.couleur.add((float)(Math.random() * 0.5) + 0.3f);
             }
-            this.pointsSol.add(tab);
+            this.PointSols.add(p);
         }
     }
     
     public Point[] getPoints() {
-        return this.points;
-    }
-    
-    public void setPoints(final Point[] points) {
-        this.points = points;
+        return this.Points;
     }
     
     public int getTaille() {
         return this.taille;
     }
     
-    public void setTaille(final int taille) {
-        this.taille = taille;
+    public ArrayList<Point[]> getPointSols() {
+        return this.PointSols;
     }
     
-    public ArrayList<Point[]> getPointsSol() {
-        return this.pointsSol;
-    }
-    
-    public ArrayList<Float> getCouleurSol() {
-        return this.couleurSol;
+    public ArrayList<Float> getCouleur() {
+        return this.couleur;
     }
 }

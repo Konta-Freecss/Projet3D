@@ -19,6 +19,9 @@ class SceneMouseAdapter extends MouseAdapter {
     }
 
 
+    /**
+     * Permet la gestion du zoom
+     */
     public void mouseWheelMoved(MouseEvent e) {
         if (e.getRotation()[1]>0){
             zoom -= 1;

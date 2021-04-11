@@ -1,4 +1,8 @@
 package Projet;
+
+/**
+ * Simple class point avec x , y , z
+ */
 public class Point
 {
     private Float x;
