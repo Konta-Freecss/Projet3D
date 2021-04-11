@@ -2,6 +2,9 @@ package Projet;
 
 import java.util.ArrayList;
 
+/**
+ * Comporte la structure du fond marin et de l'environnement
+ */
 public class FondMarin
 {
     private Point[] Points;

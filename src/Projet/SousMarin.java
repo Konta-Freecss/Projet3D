@@ -2,6 +2,9 @@ package Projet;
 
 import java.util.ArrayList;
 
+/**
+ * Comporte la structure du sous marin
+ */
 public class SousMarin {
     /**
      * Création de variable pi
